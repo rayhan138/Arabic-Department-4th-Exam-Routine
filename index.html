@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Honors 4th Year Exam Countdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Space Grotesk', monospace, sans-serif;
+            background: linear-gradient(-45deg, #fef6e4, #fff4d6, #ffeaa7, #fff9e6, #fef6e4);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: #000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: #ff6b6b;
+            border: 5px solid #000;
+            box-shadow: 10px 10px 0 #000;
+            margin: 30px 20px 20px 20px;
+            width: calc(100% - 40px);
+            max-width: 1200px;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin: 0 0 15px 0;
+            letter-spacing: -2px;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #000;
+        }
+
+        header p {
+            font-size: 1.4rem;
+            margin: 0;
+            font-weight: 900;
+            color: #000;
+            background: #fef6e4;
+            display: inline-block;
+            padding: 12px 24px;
+            border: 4px solid #000;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        .exam-card {
+            width: 320px;
+            height: 450px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .exam-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        @media (hover: hover) {
+            .exam-card:hover .card-inner {
+                transform: rotateY(180deg);
+            }
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border: 5px solid #000;
+            box-shadow: 8px 8px 0 #000;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background: #fff;
+        }
+
+        .card-back {
+            background: #fff;
+            transform: rotateY(180deg);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .exam-card:hover {
+            transform: translate(-4px, -4px);
+        }
+
+        /* Bold color backgrounds for each card */
+        .exam-card:nth-child(1) .card-front { background: #ff6b6b; }
+        .exam-card:nth-child(2) .card-front { background: #4ecdc4; }
+        .exam-card:nth-child(3) .card-front { background: #ffe66d; }
+        .exam-card:nth-child(4) .card-front { background: #a8e6cf; }
+        .exam-card:nth-child(5) .card-front { background: #ff8b94; }
+        .exam-card:nth-child(6) .card-front { background: #c7ceea; }
+        .exam-card:nth-child(7) .card-front { background: #ffd3b6; }
+        .exam-card:nth-child(8) .card-front { background: #ffaaa5; }
+        .exam-card:nth-child(9) .card-front { background: #dcedc1; }
+
+        .card-back h4 {
+            font-size: 1.2rem;
+            margin: 0 0 12px 0;
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            border: 3px solid #000;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .card-back ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .card-back li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .card-back p {
+            margin: 10px 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .card-back strong {
+            display: block;
+            margin-top: 15px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .subject-code {
+            display: inline-block;
+            background: #000;
+            color: #fff;
+            padding: 10px 18px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            border: 4px solid #000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subject-name {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #000;
+            margin: 0 0 15px 0;
+            line-height: 1.2;
+            min-height: 65px;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .exam-date {
+            font-size: 1.1rem;
+            color: #000;
+            margin-bottom: 20px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fef6e4;
+            padding: 12px;
+            border: 4px solid #000;
+        }
+
+        .countdown-box {
+            display: flex;
+            justify-content: space-between;
+            background: #000;
+            border: 4px solid #000;
+            padding: 15px;
+            gap: 10px;
+        }
+
+        .time-unit {
+            text-align: center;
+            color: #fff;
+            flex: 1;
+        }
+
+        .time-unit span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1;
+            color: #fff;
+        }
+
+        .time-unit label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 8px;
+            display: block;
+            color: #fff;
+            font-weight: 900;
+        }
+
+        .completed-badge {
+            display: none;
+            background: #000;
+            color: #4ecdc4;
+            text-align: center;
+            padding: 20px;
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            border: 4px solid #000;
+            text-transform: uppercase;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 30px;
+            color: #000;
+            font-weight: 900;
+            text-align: center;
+            background: #ffe66d;
+            border: 5px solid #000;
+            box-shadow: 8px 8px 0 #000;
+            margin-bottom: 30px;
+            width: calc(100% - 40px);
+            max-width: 1200px;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .exam-card { 
+                width: 100%; 
+                max-width: 350px;
+                height: 420px;
+            }
+            header { 
+                box-shadow: 6px 6px 0 #000;
+                margin: 20px 10px 15px 10px;
+                padding: 30px 15px;
+                width: calc(100% - 20px);
+            }
+            header h1 { 
+                font-size: 2.2rem;
+                letter-spacing: -1px;
+            }
+            header p {
+                font-size: 1rem;
+                padding: 10px 16px;
+            }
+            footer {
+                box-shadow: 6px 6px 0 #000;
+                font-size: 1rem;
+                padding: 20px;
+                margin: 20px 10px;
+                width: calc(100% - 20px);
+            }
+            .card-front, .card-back {
+                box-shadow: 6px 6px 0 #000;
+                padding: 20px;
+            }
+            .subject-name {
+                font-size: 1.4rem;
+                min-height: 60px;
+            }
+            .subject-code {
+                font-size: 0.95rem;
+                padding: 8px 14px;
+            }
+            .exam-date {
+                font-size: 0.95rem;
+                padding: 10px;
+            }
+            .countdown-box {
+                padding: 12px 8px;
+                gap: 5px;
+            }
+            .time-unit span {
+                font-size: 1.6rem;
+            }
+            .time-unit label {
+                font-size: 0.65rem;
+                letter-spacing: 0.5px;
+            }
+            .card-back h4 {
+                font-size: 1rem;
+            }
+            .card-back li {
+                font-size: 0.8rem;
+            }
+            .card-back p {
+                font-size: 0.85rem;
+            }
+            .card-back strong {
+                font-size: 0.9rem;
+            }
+            .container {
+                padding: 15px 10px;
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            header p {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+            .exam-card {
+                max-width: 100%;
+                height: 400px;
+            }
+            .subject-name {
+                font-size: 1.2rem;
+            }
+            .countdown-box {
+                padding: 10px 5px;
+                gap: 3px;
+            }
+            .time-unit span {
+                font-size: 1.4rem;
+            }
+            .time-unit label {
+                font-size: 0.6rem;
+                letter-spacing: 0px;
+            }
+            footer {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>My Honors 4th Year Exams 🎓</h1>
+        <p>Department of Arabic | Exam Time: 1:30 PM</p>
+    </header>
+
+    <div class="container" id="exams-container">
+        <!-- Cards will be generated by JavaScript -->
+    </div>
+
+    <footer>
+        Best of luck with your preparation! Stay focused! 📚✨
+    </footer>
+
+    <script>
+        // Exam Data with detailed syllabus information
+        const exams = [
+            { 
+                code: "241201", 
+                name: "Modern Poetry", 
+                dateStr: "April 30, 2026", 
+                dateTime: "2026-04-30T13:30:00+06:00",
+                credits: 4,
+                marks: 100,
+                classHours: "60 hrs",
+                details: {
+                    topics: [
+                        "Ahmad Shawqi: Al-Shawqiyat, Qasidat al-Hamziyya al-Nabawiyya",
+                        "Hafiz Ibrahim: Diwan Hafiz Ibrahim, Qasidat Tahiyyat al-Am al-Hijri",
+                        "Ma'ruf al-Rusafi: Diwan Ma'ruf al-Rusafi, Ila al-Shubban, al-Yatim fi al-Id"
+                    ]
+                }
+            },
+            { 
+                code: "241203", 
+                name: "History of Arabic Literature", 
+                dateStr: "May 03, 2026", 
+                dateTime: "2026-05-03T13:30:00+06:00",
+                credits: 4,
+                marks: 100,
+                classHours: "60 hrs",
+                details: {
+                    subtitle: "(1798-Till now)",
+                    topics: [
+                        "Origin and development of modern Arabic prose and poetry",
+                        "Leading modern poets and writers",
+                        "Novel, Short stories, Drama and Maqalah",
+                        "Journalism in Arabic, its Origin and Development",
+                        "Islamic literature in Arabic"
+                    ],
+                    books: [
+                        "Jurji Zaydan: Tarikh al-Adab al-Lughat al-Arabiyya",
+                        "Ahmad Hasan al Zayyat: Tarikh al-Adab al-Arabi",
+                        "R.A. Nicholson: A Literary History of the Arabs"
+                    ]
+                }
+            },
+            { 
+                code: "241205", 
+                name: "Arabic Literary Criticism", 
+                dateStr: "May 06, 2026", 
+                dateTime: "2026-05-06T13:30:00+06:00",
+                credits: 4,
+                marks: 100,
+                classHours: "60 hrs",
+                details: {
+                    books: [
+                        "Qudama b. J'afar: Naqd al-Nathr",
+                        "Taha Husain: Min Hadith al-Shir wa al-Nathr"
+                    ]
+                }
+            },
+            { 
+                code: "241207", 
+                name: "Modern Prose (Novel and Drama)", 
+                dateStr: "May 10, 2026", 
+                dateTime: "2026-05-10T13:30:00+06:00",
+                credits: 4,
+                marks: 100,
+                classHours: "60 hrs",
+                details: {
+                    prescribed: [
+                        "Mahmud Taimur: Ihsan lillah (Novel)",
+                        "Nazib Kilani: Rihlatun ilallah (Novel)",
+                        "Mustafa Kamil: Fath al-Andalus (Drama)"
+                    ]
+                }
+            },
+            { 
+                code: "241209", 
+                name: "`Ilmul Kalam", 
+                dateStr: "May 13, 2026", 
+                dateTime: "2026-05-13T13:30:00+06:00",
+                credits: 4,
+                marks: 100,
+                classHours: "60 hrs",
+                details: {
+                    prescribed: [
+                        "Al-Tafta zani: Sharh al-Aqaid al-Nasafi"
+                    ],
+                    recommended: [
+                        "Dr. A.N.M Raisuddin: Al-Kalam",
+                        "Principal professor Md.Fazlul Rahman: Aqaid al-Islam",
+                        "Imam Al Gazali: Yahya Ulmum al-Din",
+                        "Maulana Shah Waliullah: Mirtur Age o Pore"
+                    ]
+                }
+            },
+            { 
+                code: "241211", 
+                name: "Communicative Arabic-IV", 
+                dateStr: "May 18, 2026", 
+                dateTime: "2026-05-18T13:30:00+06:00",
+                credits: 4,
+                marks: 100,
+                classHours: "60 hrs",
+                details: {
+                    prescribed: [
+                        "Al-Arabia Lil-Hayatil Yaomiyyah, 4th Vol. Dr. Gias Uddin, Md. Abul Kalam Azad, Bangladesh Open University, CALP"
+                    ]
+                }
+            },
+            { 
+                code: "241213", 
+                name: "History of Islam (750-1258AD)", 
+                dateStr: "May 21, 2026", 
+                dateTime: "2026-05-21T13:30:00+06:00",
+                credits: 4,
+                marks: 100,
+                classHours: "60 hrs",
+                details: {
+                    topics: [
+                        "Social, Political, Educational and cultural contribution of Abbasaid Rules"
+                    ],
+                    recommended: [
+                        "Sayyed Ameer Ali: A short History of the Sarascens",
+                        "P.K Hitt: History of Arabs"
+                    ]
+                }
+            },
+            { 
+                code: "241215", 
+                name: "Studies of Arabic in Bengal", 
+                dateStr: "June 07, 2026", 
+                dateTime: "2026-06-07T13:30:00+06:00",
+                credits: 4,
+                marks: 100,
+                classHours: "60 hrs",
+                details: {
+                    topics: [
+                        "History of Arabic in Bengal, Entrance of Arabic, its Development expansion up to 1971",
+                        "Importance of educational institutions: Calcata Alia, Dhaka Alia Madrasa, Dhaka University, Rajshahi University, Islamic University, Sylhet Alia, Mustafabia Alia Madrasa, Bogra",
+                        "Contribution of selected persons: Ubaid Ullah, Ubaid sohrawardiy, Abdur Rahman Kashgory, Mufti Amimul Ihsam, Alaudddin Al-azhari, Abdullah Nadavi, Abdullahil Qurashi, Dr. Shirajul Haque, Syed Moazzem Hussin, Abu Nasar Wahid and Dr. md. Ishaque, Prof. A T M Musleh Uddin, Prof. Md. Ayub ali"
+                    ]
+                }
+            },
+            { 
+                code: "241217", 
+                name: "Muslim Philosophy-2", 
+                dateStr: "June 10, 2026", 
+                dateTime: "2026-06-10T13:30:00+06:00",
+                credits: 4,
+                marks: 100,
+                classHours: "60 hrs",
+                details: {
+                    topics: [
+                        "Al-Tasawwuf: origin and development of sufism",
+                        "Main tenets of the sufi orders: Qadiriya, Chistiya, Suhrewandiya, Naqsbandiya, Shazilliya, Mujaddidiya",
+                        "Life and works of those who are contributed in this regards"
+                    ],
+                    recommended: [
+                        "Shah Waliullah: Hujat Allah al-Baligha",
+                        "Dr. Rashidul Alam: Muslim Darshaner Bhumika",
+                        "Ibn Hazm: Kitab al-Milal wal-Nihal",
+                        "M.M Sharif: A History of Muslim Philosophy"
+                    ]
+                }
+            }
+        ];
+
+        const container = document.getElementById('exams-container');
+
+        // Generate HTML for each exam card with flip functionality
+        exams.forEach((exam, index) => {
+            const card = document.createElement('div');
+            card.className = 'exam-card';
+            
+            // Build back side content
+            let backContent = `
+                <h4>📚 ${exam.name}</h4>
+                <p><strong>CREDITS:</strong> ${exam.credits}</p>
+            `;
+            
+            if (exam.details.subtitle) {
+                backContent += `<p><em>${exam.details.subtitle}</em></p>`;
+            }
+            
+            if (exam.details.topics) {
+                backContent += `<strong>TOPICS:</strong><ul>`;
+                exam.details.topics.forEach(topic => {
+                    backContent += `<li>${topic}</li>`;
+                });
+                backContent += `</ul>`;
+            }
+            
+            if (exam.details.prescribed) {
+                backContent += `<strong>PRESCRIBED:</strong><ul>`;
+                exam.details.prescribed.forEach(book => {
+                    backContent += `<li>${book}</li>`;
+                });
+                backContent += `</ul>`;
+            }
+            
+            if (exam.details.books) {
+                backContent += `<strong>BOOKS:</strong><ul>`;
+                exam.details.books.forEach(book => {
+                    backContent += `<li>${book}</li>`;
+                });
+                backContent += `</ul>`;
+            }
+            
+            if (exam.details.recommended) {
+                backContent += `<strong>RECOMMENDED:</strong><ul>`;
+                exam.details.recommended.forEach(book => {
+                    backContent += `<li>${book}</li>`;
+                });
+                backContent += `</ul>`;
+            }
+            
+            card.innerHTML = `
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-code">Paper: ${exam.code}</div>
+                        <h3 class="subject-name">${exam.name}</h3>
+                        <div class="exam-date">📅 ${exam.dateStr} | ⏰ 1:30 PM</div>
+                        
+                        <div class="countdown-box" id="countdown-${index}">
+                            <div class="time-unit"><span id="days-${index}">00</span><label>Days</label></div>
+                            <div class="time-unit"><span id="hours-${index}">00</span><label>Hrs</label></div>
+                            <div class="time-unit"><span id="mins-${index}">00</span><label>Min</label></div>
+                            <div class="time-unit"><span id="secs-${index}">00</span><label>Sec</label></div>
+                        </div>
+                        
+                        <div class="completed-badge" id="completed-${index}">
+                            EXAM FINISHED ✅
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        ${backContent}
+                    </div>
+                </div>
+            `;
+            
+            // Add click event for mobile devices
+            card.addEventListener('click', function() {
+                this.classList.toggle('flipped');
+            });
+            
+            container.appendChild(card);
+        });
+
+        // Function to update all countdowns every second
+        function updateCountdowns() {
+            const now = new Date().getTime();
+
+            exams.forEach((exam, index) => {
+                const examTime = new Date(exam.dateTime).getTime();
+                const distance = examTime - now;
+
+                const countdownBox = document.getElementById(`countdown-${index}`);
+                const completedBadge = document.getElementById(`completed-${index}`);
+
+                if (distance < 0) {
+                    // Exam time has passed
+                    countdownBox.style.display = 'none';
+                    completedBadge.style.display = 'block';
+                } else {
+                    // Math calculations for time
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    // Output the results, padding with zero if single digit
+                    document.getElementById(`days-${index}`).innerText = days < 10 ? '0' + days : days;
+                    document.getElementById(`hours-${index}`).innerText = hours < 10 ? '0' + hours : hours;
+                    document.getElementById(`mins-${index}`).innerText = minutes < 10 ? '0' + minutes : minutes;
+                    document.getElementById(`secs-${index}`).innerText = seconds < 10 ? '0' + seconds : seconds;
+                }
+            });
+        }
+
+        // Run the timer every second
+        setInterval(updateCountdowns, 1000);
+        updateCountdowns(); // Run immediately on load
+    </script>
+</body>
+</html>
